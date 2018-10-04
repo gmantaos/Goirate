@@ -12,10 +12,12 @@ import (
 
 // SMTPConfig holds the host information and credentials for sending e-mails using SMTP.
 type SMTPConfig struct {
-	Host     string `toml:"host"`
-	Port     uint16 `toml:"port"`
-	Username string `toml:"username"`
-	Password string `toml:"password"`
+	Host          string `toml:"host"`
+	Port          uint16 `toml:"port"`
+	Username      string `toml:"username"`
+	Password      string `toml:"password"`
+	From          string `toml:"from"`
+	SubjectPrefix string `toml:"subject_prefix"`
 }
 
 // SendEmail sends the e-mail body to the given receiver over SMTP.
@@ -25,8 +27,18 @@ func (cfg *SMTPConfig) SendEmail(subject, body string, to ...string) error {
 		to[i] = strings.TrimSpace(to[i])
 	}
 
+	if cfg.SubjectPrefix != "" {
+		subject = fmt.Sprintf("%s %s", cfg.SubjectPrefix, subject)
+	}
+
+	fromString := cfg.From
+
+	if fromString == "" {
+		fromString = fmt.Sprintf("Goirate <%s>", cfg.Username)
+	}
+
 	mime := "MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\n\n"
-	fromString := fmt.Sprintf("Goirate <%s>", cfg.Username)
+
 	commaSeparatedTo := strings.Join(to, ",")
 
 	msg := fmt.Sprintf("From: %v\nTo: %s\nSubject: %s\n%s\n\n%s\n", fromString, commaSeparatedTo, subject, mime, body)

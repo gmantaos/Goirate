@@ -351,11 +351,11 @@ func (cmd *scanCommand) handleSeriesTorrents(seriesTorrentsList []seriesTorrents
 
 			if len(seriesTorrents.Torrents) > 1 {
 
-				subject = fmt.Sprintf("[Goirate] New episodes out for %s (%s)", seriesTorrents.Series.Title, episodeRangeString(seriesTorrents))
+				subject = fmt.Sprintf("Episodes out for %s (%s)", seriesTorrents.Series.Title, episodeRangeString(seriesTorrents))
 
 			} else {
 
-				subject = fmt.Sprintf("[Goirate] New episode out for %s (%s)", seriesTorrents.Series.Title, seriesTorrents.Torrents[0].Episode)
+				subject = fmt.Sprintf("Episode out for %s (%s)", seriesTorrents.Series.Title, seriesTorrents.Torrents[0].Episode)
 			}
 
 			err = Config.SMTPConfig.SendEmail(subject, body, notify...)

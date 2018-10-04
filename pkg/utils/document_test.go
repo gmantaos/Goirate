@@ -40,8 +40,8 @@ func TestHTTPPost(t *testing.T) {
 		{
 			"some title",
 			"super special body",
-			123456,
-			102,
+			1234567,
+			1234567,
 		},
 		{},
 	}
